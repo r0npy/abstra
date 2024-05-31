@@ -1,0 +1,6 @@
+@Abstra_HostAddress = http://localhost:5103
+
+GET {{Abstra_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
