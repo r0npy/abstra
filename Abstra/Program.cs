@@ -1,4 +1,7 @@
 
+using Abstra.Core.Repositories;
+using Abstra.Core.Services;
+
 namespace Abstra
 {
     public class Program
@@ -8,6 +11,8 @@ namespace Abstra
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddTransient<IClientRepository, ClientRepository>();
+            builder.Services.AddTransient<IClientService, ClientService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,0 +1,7 @@
+﻿# top-most EditorConfig file
+root = true
+
+[*.cs]
+
+# IDE0005: Se configura como ERROR los usings no utilizados
+dotnet_diagnostic.IDE0005.severity = error
