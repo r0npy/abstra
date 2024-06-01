@@ -1,5 +1,6 @@
 using Abstra.Injections;
 using Abstra.Mappers;
+using Abstra.Middlewares;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Abstra
@@ -38,6 +39,8 @@ namespace Abstra
             }
 
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

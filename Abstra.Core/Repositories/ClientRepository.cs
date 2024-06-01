@@ -21,7 +21,7 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone from Client";
+            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status from Client";
 
             IEnumerable<Client>? records = await connection.QueryAsync<Client>(sql);
 
@@ -41,7 +41,7 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone from Client WHERE ClientId = @id";
+            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status from Client WHERE ClientId = @id";
 
             Client? record = await connection.QueryFirstOrDefaultAsync<Client>(sql, new { id });
 
