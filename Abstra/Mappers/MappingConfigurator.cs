@@ -1,6 +1,6 @@
-﻿using Abstra.Mappers.Responses;
+﻿using Abstra.Core.Domains;
+using Abstra.Mappers.Responses;
 using Mapster;
-using Abstra.Core.Domains;
 
 namespace Abstra.Mappers
 {

@@ -7,5 +7,13 @@ namespace Abstra.Core.Services
         Task<Client?> Get(int id);
 
         Task<IEnumerable<Client>?> Get();
+
+        Task<Client> Create(Client record);
+
+        Task<int> Update(Client record);
+
+        Task<int> Remove(int id);
+
+        Task ChangePassword(int id, string oldPassword, string newPassword);
     }
 }

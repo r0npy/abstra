@@ -3,8 +3,8 @@ using Abstra.Core.Repositories.Actions;
 
 namespace Abstra.Core.Repositories
 {
-    public interface IClientRepository : IReadAction<Client?, int>
+    public interface IClientRepository : IReadAction<Client?, int>, ICreateAction<Client, Client>, IUpdateAction<Client>, IDeleteAction<int>
     {
-        Task<IEnumerable<Client>?> Get();
+        Task ChangePassword(int id, string oldPassword, string newPassword);
     }
 }
