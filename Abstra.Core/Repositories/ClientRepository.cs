@@ -131,7 +131,8 @@ namespace Abstra.Core.Repositories
             string salt = config["Salt"]!;
 
             int affectedRows = await connection.ExecuteAsync(sql, 
-                new { id, 
+                new { 
+                    id, 
                     oldPassword = Helpers.Encrypt.ComputeSha512Hash(oldPassword + salt), 
                     newPassword = Helpers.Encrypt.ComputeSha512Hash(newPassword + salt)
                 });
