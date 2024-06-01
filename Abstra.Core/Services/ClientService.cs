@@ -26,5 +26,11 @@ namespace Abstra.Core.Services
             _logger.Trace($"Vamos a pasar al Repository clientRepository.Create({JsonSerializer.Serialize(record)})");
             return await clientRepository.Create(record);
         }
+
+        public async Task<int> Update(Client record)
+        {
+            _logger.Trace($"Vamos a pasar al Repository clientRepository.Update({JsonSerializer.Serialize(record)})");
+            return await clientRepository.Update(record);
+        }
     }
 }

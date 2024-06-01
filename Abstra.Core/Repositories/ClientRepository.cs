@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using NLog;
 using System.Text.Json;
+using Abstra.Core.Exceptions;
 
 namespace Abstra.Core.Repositories
 {
@@ -66,6 +67,7 @@ namespace Abstra.Core.Repositories
                             SELECT SCOPE_IDENTITY();";
 
             string salt = config["Salt"]!;
+            record.Status = true;
             record.Password = Helpers.Encrypt.ComputeSha512Hash(record.Password + salt);
 
             record.ClientId = await connection.ExecuteScalarAsync<int>(sql, record);
@@ -73,6 +75,27 @@ namespace Abstra.Core.Repositories
             _logger.Info($"Se ha creado el cliente: {JsonSerializer.Serialize(record)}");
 
             return record;
+        }
+
+        public async Task<int> Update(Client record)
+        {
+            _logger.Trace($"Vamos a crear actualizar el cliente {record.ClientId}");
+
+            await using SqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync();
+
+            string sql = @"UPDATE dbo.Client SET Name = @Name, Gender = @Gender, Birthdate = @Birthdate, 
+                            Address = @Address, Phone = @Phone, Status = @Status WHERE ClientId = @ClientId";
+
+            int affectedRows = await connection.ExecuteAsync(sql, record);
+
+            if (affectedRows == 0)
+                throw new BussinessException("No se ha actualizado ningún registro");
+
+            _logger.Info($"Se ha actualizado el cliente: {JsonSerializer.Serialize(record)}");
+
+            return affectedRows;
         }
     }
 }

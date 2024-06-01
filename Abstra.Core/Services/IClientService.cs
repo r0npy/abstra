@@ -9,5 +9,7 @@ namespace Abstra.Core.Services
         Task<IEnumerable<Client>?> Get();
 
         Task<Client> Create(Client record);
+
+        Task<int> Update(Client record);
     }
 }

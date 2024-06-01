@@ -69,7 +69,7 @@ namespace Abstra.Controllers
         [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
         public async Task<ActionResult<IEnumerable<ClientGetResponseDto>?>> Create(ClientPostRequestCreateDto model)
         {
-            _logger.Info($"Recibiendo un pedido para crear el cliente {JsonSerializer.Serialize(model)}");
+            _logger.Info($"Recibiendo un pedido para crear el cliente {model}");
 
             Client record = model.Adapt<Client>();
 
@@ -82,6 +82,23 @@ namespace Abstra.Controllers
             _logger.Info($"Listado de clientes transformados a retornar: {JsonSerializer.Serialize(response)}");
 
             return Created($"/users/{response.ClientId}", response);
+        }
+
+        [HttpPut]
+        [Produces("application/json")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
+        public async Task<ActionResult> Update(ClientPutRequesUpdateDto model)
+        {
+            _logger.Info($"Recibiendo un pedido para actualizar el cliente {JsonSerializer.Serialize(model)}");
+
+            Client record = model.Adapt<Client>();
+
+            _ = await clientService.Update(record);
+
+            _logger.Info($"Se ha actualizado correctamente el cliente: {JsonSerializer.Serialize(record)}");
+
+            return NoContent();
         }
     }
 }
