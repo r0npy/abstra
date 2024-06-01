@@ -38,5 +38,11 @@ namespace Abstra.Core.Services
             _logger.Trace($"Vamos a pasar al Repository clientRepository.Remove({id})");
             return await clientRepository.Remove(id);
         }
+
+        public async Task ChangePassword(int id, string oldPassword, string newPassword)
+        {
+            _logger.Trace($"Vamos a pasar al Repository clientRepository.ChangePassword({id})");
+            await clientRepository.ChangePassword(id, oldPassword, newPassword);
+        }
     }
 }

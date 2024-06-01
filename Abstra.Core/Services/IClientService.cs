@@ -13,5 +13,7 @@ namespace Abstra.Core.Services
         Task<int> Update(Client record);
 
         Task<int> Remove(int id);
+
+        Task ChangePassword(int id, string oldPassword, string newPassword);
     }
 }

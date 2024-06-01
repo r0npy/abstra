@@ -115,5 +115,20 @@ namespace Abstra.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
+        public async Task<ActionResult> ChangePassword(int id, ClientPatchRequestChangePasswordDto model)
+        {
+            _logger.Info($"Recibiendo un pedido para eliminar el cliente {id}");
+
+            await clientService.ChangePassword(id, model.OldPassword, model.NewPassword);
+
+            _logger.Info($"Se ha eliminado correctamente el cliente: {id}");
+
+            return NoContent();
+        }
     }
 }

@@ -86,7 +86,7 @@ namespace Abstra.Core.Repositories
             await connection.OpenAsync();
 
             string sql = @"UPDATE dbo.Client SET Name = @Name, Gender = @Gender, Birthdate = @Birthdate, 
-                            Address = @Address, Phone = @Phone, Status = @Status WHERE ClientId = @ClientId";
+                            Address = @Address, Phone = @Phone WHERE ClientId = @ClientId";
 
             int affectedRows = await connection.ExecuteAsync(sql, record);
 
@@ -116,6 +116,30 @@ namespace Abstra.Core.Repositories
             _logger.Info($"Se ha actualizado el cliente: {id} correctamente");
 
             return affectedRows;
+        }
+
+        public async Task ChangePassword(int id, string oldPassword, string newPassword)
+        {
+            _logger.Trace($"Vamos a crear actualizar el password del cliente {id}");
+
+            await using SqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync();
+
+            string sql = @"UPDATE dbo.Client SET Password = @newPassword WHERE ClientId = @id and Password = @oldPassword";
+
+            string salt = config["Salt"]!;
+
+            int affectedRows = await connection.ExecuteAsync(sql, 
+                new { id, 
+                    oldPassword = Helpers.Encrypt.ComputeSha512Hash(oldPassword + salt), 
+                    newPassword = Helpers.Encrypt.ComputeSha512Hash(newPassword + salt)
+                });
+
+            if (affectedRows == 0)
+                throw new BussinessException("No se ha actualizado el password");
+
+            _logger.Info($"Se ha actualizado el password del cliente: {id}");
         }
     }
 }
