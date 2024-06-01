@@ -100,5 +100,20 @@ namespace Abstra.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        [Produces("application/json")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
+        public async Task<ActionResult> Remove(int id)
+        {
+            _logger.Info($"Recibiendo un pedido para eliminar el cliente {id}");
+
+            _ = await clientService.Remove(id);
+
+            _logger.Info($"Se ha eliminado correctamente el cliente: {id}");
+
+            return NoContent();
+        }
     }
 }

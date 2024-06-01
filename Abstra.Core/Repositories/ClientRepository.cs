@@ -97,5 +97,25 @@ namespace Abstra.Core.Repositories
 
             return affectedRows;
         }
+
+        public async Task<int> Remove(int id)
+        {
+            _logger.Trace($"Vamos a crear cliente el cliente {id}");
+
+            await using SqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync();
+
+            string sql = @"DELETE FROM dbo.Client WHERE ClientId = @id";
+
+            int affectedRows = await connection.ExecuteAsync(sql, new { id });
+
+            if (affectedRows == 0)
+                throw new BussinessException("No se ha eliminado ningún registro");
+
+            _logger.Info($"Se ha actualizado el cliente: {id} correctamente");
+
+            return affectedRows;
+        }
     }
 }

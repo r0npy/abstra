@@ -11,5 +11,7 @@ namespace Abstra.Core.Services
         Task<Client> Create(Client record);
 
         Task<int> Update(Client record);
+
+        Task<int> Remove(int id);
     }
 }
