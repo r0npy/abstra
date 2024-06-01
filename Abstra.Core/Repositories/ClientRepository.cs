@@ -11,7 +11,7 @@ namespace Abstra.Core.Repositories
     public class ClientRepository(IConfiguration config) : IClientRepository
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly string connectionString = config["ConnectionStrings:Abstra"]!;  
+        private readonly string connectionString = config["ConnectionStrings:Abstra"]!;
 
         public async Task<IEnumerable<Client>?> Get()
         {
@@ -49,6 +49,28 @@ namespace Abstra.Core.Repositories
                 _logger.Warn($"No se encontró el User con Id: {id}");
             else
                 _logger.Info($"Se encontró el User: {JsonSerializer.Serialize(record)}");
+
+            return record;
+        }
+
+        public async Task<Client> Create(Client record)
+        {
+            _logger.Trace($"Vamos a crear usuario {record.Name}");
+
+            await using SqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync();
+
+            string sql = @"INSERT INTO dbo.Client (Name, Gender, Birthdate, Address, Phone, Password, Status) 
+                            VALUES (@Name, @Gender, @Birthdate, @Address, @Phone, @Password, @Status)
+                            SELECT SCOPE_IDENTITY();";
+
+            string salt = config["Salt"]!;
+            record.Password = Helpers.Encrypt.ComputeSha512Hash(record.Password + salt);
+
+            record.ClientId = await connection.ExecuteScalarAsync<int>(sql, record);
+
+            _logger.Info($"Se ha creado el cliente: {JsonSerializer.Serialize(record)}");
 
             return record;
         }

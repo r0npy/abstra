@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Abstra.Core\Abstra.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mappers\Requests\" />
-  </ItemGroup>
-
 </Project>
