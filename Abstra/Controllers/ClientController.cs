@@ -1,4 +1,5 @@
 ﻿using Abstra.Core.Domains;
+using Abstra.Core.Exceptions;
 using Abstra.Core.Services;
 using Abstra.Mappers.Responses;
 using Mapster;
@@ -21,6 +22,13 @@ namespace Abstra.Controllers
         public async Task<ActionResult<ClientGetResponseDto?>> Get(int id)
         {
             _logger.Info($"Recibiendo un pedido para recuperar el usuario con id {id}");
+
+            if (id <= 0)
+            {
+                string message = $"El id {id} no puede ser menor a 1";
+                _logger.Error(message);
+                throw new BussinessException(message);
+            }
 
             Client? record = await clientService.Get(id);
 

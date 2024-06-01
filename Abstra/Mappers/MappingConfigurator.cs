@@ -10,12 +10,13 @@ namespace Abstra.Mappers
         {
             #region Mapster Mapping
             TypeAdapterConfig<Client, ClientGetResponseDto>.NewConfig()
-                .Map(dest => dest.IdClient, src => src.ClientId)
+                .Map(dest => dest.ClientId, src => src.ClientId)
                 .Map(dest => dest.Name, src => src.Name)
-                .Map(dest => dest.Gender, src => src.Gender)
+                .Map(dest => dest.Gender, src => src.Gender == 'M' ? "Male" : "Female")
                 .Map(dest => dest.Birthdate, src => src.Birthdate)
                 .Map(dest => dest.Address, src => src.Address)
-                .Map(dest => dest.Phone, src => src.Phone);
+                .Map(dest => dest.Phone, src => src.Phone)
+                .Map(dest => dest.Status, src => src.Status ? "Active" : "Inactive");
             #endregion
         }
     }
