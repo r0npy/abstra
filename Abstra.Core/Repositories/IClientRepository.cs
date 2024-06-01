@@ -5,6 +5,8 @@ namespace Abstra.Core.Repositories
 {
     public interface IClientRepository : IReadAction<Client?, int>, ICreateAction<Client, Client>, IUpdateAction<Client>, IDeleteAction<int>
     {
-        Task ChangePassword(int id, string oldPassword, string newPassword);
+        Task ChangePassword(int clientId, string oldPassword, string newPassword);
+
+        Task<Client?> Login(int clientId, string password);
     }
 }

@@ -118,21 +118,21 @@ namespace Abstra.Core.Repositories
             return affectedRows;
         }
 
-        public async Task ChangePassword(int id, string oldPassword, string newPassword)
+        public async Task ChangePassword(int clientId, string oldPassword, string newPassword)
         {
-            _logger.Trace($"Vamos a crear actualizar el password del cliente {id}");
+            _logger.Trace($"Vamos a crear actualizar el password del cliente {clientId}");
 
             await using SqlConnection connection = new(connectionString);
 
             await connection.OpenAsync();
 
-            string sql = @"UPDATE dbo.Client SET Password = @newPassword WHERE ClientId = @id and Password = @oldPassword";
+            string sql = @"UPDATE dbo.Client SET Password = @newPassword WHERE ClientId = @clientId and Password = @oldPassword";
 
             string salt = config["Salt"]!;
 
             int affectedRows = await connection.ExecuteAsync(sql, 
-                new { 
-                    id, 
+                new {
+                    clientId, 
                     oldPassword = Helpers.Encrypt.ComputeSha512Hash(oldPassword + salt), 
                     newPassword = Helpers.Encrypt.ComputeSha512Hash(newPassword + salt)
                 });
@@ -140,7 +140,24 @@ namespace Abstra.Core.Repositories
             if (affectedRows == 0)
                 throw new BussinessException("No se ha actualizado el password");
 
-            _logger.Info($"Se ha actualizado el password del cliente: {id}");
+            _logger.Info($"Se ha actualizado el password del cliente: {clientId}");
+        }
+
+        public async Task<Client?> Login(int clientId, string password)
+        {
+            _logger.Trace($"Vamos a realizar el login: {clientId}");
+
+            await using SqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync();
+
+            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status from Client WHERE ClientId = @clientId and Password = @password";
+
+            string salt = config["Salt"]!;
+
+            Client? record = await connection.QueryFirstOrDefaultAsync<Client>(sql, new { clientId, password = Helpers.Encrypt.ComputeSha512Hash(password + salt) });
+
+            return record;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Abstra.Mappers.Responses
 {
     public class ClientGetResponseDto
     {
-        [JsonPropertyName("ClientId")]
+        [JsonPropertyName("clientId")]
         public int? ClientId { get; set; }
 
         [JsonPropertyName("name")]
