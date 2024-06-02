@@ -77,7 +77,7 @@ namespace Abstra.Controllers
         [ProducesResponseType(201, Type = typeof(IEnumerable<ClientGetResponseDto>))]
         [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
         [Authorize(Policy = "BearerToken")]
-        public async Task<ActionResult<IEnumerable<ClientGetResponseDto>?>> Create(ClientPostRequestCreateDto model)
+        public async Task<ActionResult<ClientGetResponseDto>> Create(ClientPostRequestCreateDto model)
         {
             _logger.Info($"Recibiendo un pedido para crear el cliente {model}");
 

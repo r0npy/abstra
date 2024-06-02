@@ -9,6 +9,9 @@ namespace Abstra.Injections
         {
             builder.Services.AddTransient<IClientRepository, ClientRepository>();
             builder.Services.AddTransient<IClientService, ClientService>();
+
+            builder.Services.AddTransient<IAccountRepository, AccountRepository>();
+            builder.Services.AddTransient<IAccountService, AccountService>();
         }
     }
 }
