@@ -21,7 +21,7 @@ namespace Abstra.Intregration.Test
 
             var loginRequest = new ClientPostRequestLoginDto
             {
-                ClientId = 1,
+                UserName = "rriveros",
                 Password = new string(pswd)
             };
 

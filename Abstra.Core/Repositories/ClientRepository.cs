@@ -22,7 +22,7 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status FROM Client";
+            string sql = @"SELECT ClientId, UserName, Name, Gender, Birthdate, Address, Phone, Status FROM Client";
 
             IEnumerable<Client>? records = await connection.QueryAsync<Client>(sql);
 
@@ -42,7 +42,7 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status FROM Client WHERE ClientId = @id";
+            string sql = @"SELECT ClientId, UserName, Name, Gender, Birthdate, Address, Phone, Status FROM Client WHERE ClientId = @id";
 
             Client? record = await connection.QueryFirstOrDefaultAsync<Client>(sql, new { id });
 
@@ -62,8 +62,8 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"INSERT INTO dbo.Client (Name, Gender, Birthdate, Address, Phone, Password, Status) 
-                            VALUES (@Name, @Gender, @Birthdate, @Address, @Phone, @Password, @Status)
+            string sql = @"INSERT INTO dbo.Client (UserName, Name Gender, Birthdate, Address, Phone, Password, Status) 
+                            VALUES (@UserName, @Name, @Gender, @Birthdate, @Address, @Phone, @Password, @Status)
                             SELECT SCOPE_IDENTITY();";
 
             string salt = config["Salt"]!;
@@ -85,8 +85,8 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"UPDATE dbo.Client SET Name = @Name, Gender = @Gender, Birthdate = @Birthdate, 
-                            Address = @Address, Phone = @Phone WHERE ClientId = @ClientId";
+            string sql = @"UPDATE dbo.Client SET UserName = @UserName Name = @Name, Gender = @Gender,  
+                            Birthdate = @Birthdate, Address = @Address, Phone = @Phone WHERE ClientId = @ClientId";
 
             int affectedRows = await connection.ExecuteAsync(sql, record);
 
@@ -143,19 +143,19 @@ namespace Abstra.Core.Repositories
             _logger.Info($"Se ha actualizado el password del cliente: {clientId}");
         }
 
-        public async Task<Client?> Login(int clientId, string password)
+        public async Task<Client?> Login(string userName, string password)
         {
-            _logger.Trace($"Vamos a realizar el login: {clientId}");
+            _logger.Trace($"Vamos a realizar el login: {userName}");
 
             await using SqlConnection connection = new(connectionString);
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status from Client WHERE ClientId = @clientId and Password = @password";
+            string sql = @"SELECT ClientId, UserName, Name, Gender, Birthdate, Address, Phone, Status from Client WHERE UserName = @userName and Password = @password";
 
             string salt = config["Salt"]!;
 
-            Client? record = await connection.QueryFirstOrDefaultAsync<Client>(sql, new { clientId, password = Helpers.Encrypt.ComputeSha512Hash(password + salt) });
+            Client? record = await connection.QueryFirstOrDefaultAsync<Client>(sql, new { userName, password = Helpers.Encrypt.ComputeSha512Hash(password + salt) });
 
             return record;
         }

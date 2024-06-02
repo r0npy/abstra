@@ -72,7 +72,7 @@ namespace Abstra.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<TransactionGetResponseRunningBalanceDto>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
-        //[Authorize(Policy = "BearerToken")]
+        [Authorize(Policy = "BearerToken")]
         public async Task<ActionResult<IEnumerable<TransactionGetResponseRunningBalanceDto>?>> GetRunningBalance(int accountId)
         {
             _logger.Info($"Recibiendo un pedido para recuperar el balance completo de la cuenta {accountId}");

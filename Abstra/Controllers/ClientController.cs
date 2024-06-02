@@ -150,24 +150,24 @@ namespace Abstra.Controllers
         [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
         public async Task<ActionResult<ClientPostResponseLoginDto>> Login(ClientPostRequestLoginDto model)
         {
-            _logger.Info($"Recibiendo un pedido para autenticar el cliente {model.ClientId}");
+            _logger.Info($"Recibiendo un pedido para autenticar el cliente {model.UserName}");
 
-            Client? record = await clientService.Login(model.ClientId, model.Password);
+            Client? record = await clientService.Login(model.UserName, model.Password);
 
             if (record == null)
                 return Unauthorized("Sus credenciales no son válidas");
 
-            _logger.Info($"Se ha logueado correctamente el cliente: {model.ClientId}, vamos a crear los claims");
+            _logger.Info($"Se ha logueado correctamente el cliente: {model.UserName}, vamos a crear los claims");
 
             List<Claim> refreshClaims =
                 [
-                    new Claim(ClaimTypes.NameIdentifier, record!.ClientId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, record.UserName),
                     new Claim("typ", "Refresh"),
                 ];
 
             List<Claim> accessClaims =
                 [
-                    new (ClaimTypes.NameIdentifier, record.ClientId.ToString()),
+                    new (ClaimTypes.NameIdentifier, record.UserName),
                     new (ClaimTypes.Name, record.Name!),
                     new ("typ", "Bearer"),
                 ];
@@ -192,13 +192,13 @@ namespace Abstra.Controllers
 
             List<Claim> refreshClaims =
                 [
-                    new (ClaimTypes.NameIdentifier, record.ClientId.ToString()),
+                    new (ClaimTypes.NameIdentifier, record.UserName),
                     new ("typ", "Refresh")
                 ];
 
             List<Claim> accessClaims =
                 [
-                    new (ClaimTypes.NameIdentifier, record.ClientId.ToString()),
+                    new (ClaimTypes.NameIdentifier, record.UserName),
                     new (ClaimTypes.Name, record.Name!),
                     new ("typ", "Bearer"),
                 ];

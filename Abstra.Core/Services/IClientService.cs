@@ -16,6 +16,6 @@ namespace Abstra.Core.Services
 
         Task ChangePassword(int clientId, string oldPassword, string newPassword);
 
-        Task<Client?> Login(int clientId, string password);
+        Task<Client?> Login(string userName, string password);
     }
 }

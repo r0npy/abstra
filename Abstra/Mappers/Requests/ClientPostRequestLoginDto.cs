@@ -4,8 +4,8 @@ namespace Abstra.Mappers.Requests
 {
     public class ClientPostRequestLoginDto
     {
-        [JsonPropertyName("clientId")]
-        public required int ClientId { get; set; }
+        [JsonPropertyName("userName")]
+        public required string UserName { get; set; }
 
         [JsonPropertyName("password")]
         public required string Password { get; set; }
