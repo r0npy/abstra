@@ -66,5 +66,26 @@ namespace Abstra.Controllers
 
             return Created($"/transaction/{response.TransactionId}", response);
         }
+
+        [HttpGet("running-balance/{accountId}")]
+        [Produces("application/json")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TransactionGetResponseRunningBalanceDto>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
+        //[Authorize(Policy = "BearerToken")]
+        public async Task<ActionResult<IEnumerable<TransactionGetResponseRunningBalanceDto>?>> GetRunningBalance(int accountId)
+        {
+            _logger.Info($"Recibiendo un pedido para recuperar el balance completo de la cuenta {accountId}");
+
+            IEnumerable<Transaction>? records = await transactionService.GetRunningBalance(accountId);
+
+            _logger.Info($"Running Balance recuperada: {JsonSerializer.Serialize(records)}");
+
+            IEnumerable<TransactionGetResponseRunningBalanceDto>? response = records.Adapt<IEnumerable<TransactionGetResponseRunningBalanceDto>>();
+
+            _logger.Info($"Running Balance transformada a retornar: {JsonSerializer.Serialize(response)}");
+
+            return response == null ? NoContent() : Ok(response);
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace Abstra.Core.Services
         Task<Transaction?> Get(int id);
 
         Task<Transaction> Create(Transaction record);
+
+        Task<IEnumerable<Transaction>?> GetRunningBalance(int accountId);
     }
 }
