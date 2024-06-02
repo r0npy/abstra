@@ -32,6 +32,13 @@ namespace Abstra.Mappers
                 .Map(dest => dest.EventDate, src => src.EventDate)
                 .Map(dest => dest.TransactionType, src => src.TransactionType == 'D' ? "Débito" : "Crédito")
                 .Map(dest => dest.Amount, src => src.Amount);
+
+            TypeAdapterConfig<Transaction, TransactionGetResponseRunningBalanceDto>.NewConfig()
+                .Map(dest => dest.TransactionId, src => src.TransactionId)
+                .Map(dest => dest.EventDate, src => src.EventDate)
+                .Map(dest => dest.TransactionType, src => src.TransactionType == 'D' ? "Débito" : "Crédito")
+                .Map(dest => dest.Amount, src => src.Amount)
+                .Map(dest => dest.RunningBalance, src => src.RunningBalance);
             #endregion
         }
     }

@@ -79,5 +79,37 @@ namespace Abstra.Core.Repositories
 
             return balance;
         }
+
+        public async Task<IEnumerable<Transaction>?> GetRunningBalance(int accountId)
+        {
+            _logger.Trace($"Vamos a consultar las transacciones para la cuenta: {accountId}");
+
+            await using SqlConnection connection = new(connectionString);
+
+            await connection.OpenAsync();
+
+            string sql = @"
+                SELECT 
+                    t.TransactionId,
+                    t.AccountId, 
+                    t.EventDate, 
+                    t.TransactionType, 
+                    t.Amount, 
+                    a.InitialBalance + SUM(t.Amount) OVER (ORDER BY t.EventDate) AS RunningBalance
+                FROM 
+                    [Transaction] t
+                JOIN 
+                    Account a ON t.AccountId = a.AccountId
+                WHERE 
+                    t.AccountId = @accountId
+                ORDER BY 
+                    t.EventDate;";
+
+            var records = await connection.QueryAsync<Transaction>(sql, new { accountId });
+
+            _logger.Info($"Running Balance a devolver: {JsonSerializer.Serialize(records)}");
+
+            return records;
+        }
     }
 }

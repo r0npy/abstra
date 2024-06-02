@@ -38,5 +38,11 @@ namespace Abstra.Core.Services
 
             return await transactionRepository.Create(record);
         }
+
+        public async Task<IEnumerable<Transaction>?> GetRunningBalance(int accountId)
+        {
+            _logger.Trace($"Vamos a pasar al Repository transactionRepository.GetRunningBalance({accountId})");
+            return await transactionRepository.GetRunningBalance(accountId);
+        }
     }
 }
