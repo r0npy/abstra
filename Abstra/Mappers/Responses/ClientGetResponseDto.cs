@@ -7,6 +7,9 @@ namespace Abstra.Mappers.Responses
         [JsonPropertyName("clientId")]
         public int? ClientId { get; set; }
 
+        [JsonPropertyName("userName")]
+        public string? UserName { get; set; }
+
         [JsonPropertyName("name")]
         public string? Name { get; set; }
 

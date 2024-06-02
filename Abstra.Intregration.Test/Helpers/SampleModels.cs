@@ -9,6 +9,7 @@ namespace Abstra.Intregration.Test
             return new ClientGetResponseDto()
             {
                 ClientId = 1,
+                UserName = "rriveros",
                 Name = "Ronald Riveros",
                 Gender = "Male",
                 Birthdate = new DateTime(1986, 12, 29),
