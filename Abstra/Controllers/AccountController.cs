@@ -13,7 +13,7 @@ namespace Abstra.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController(IAccountService accountService, IConfiguration config) : ControllerBase
+    public class AccountController(IAccountService accountService) : ControllerBase
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -31,7 +31,7 @@ namespace Abstra.Controllers
             {
                 string message = $"El id {id} no puede ser menor a 1";
                 _logger.Error(message);
-                throw new BussinessException(message);
+                throw new BussinessValidationException(message);
             }
 
             Account? record = await accountService.Get(id);
@@ -68,7 +68,7 @@ namespace Abstra.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(201, Type = typeof(IEnumerable<AcccountGetResponseDto>))]
+        [ProducesResponseType(201, Type = typeof(AcccountGetResponseDto))]
         [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
         [Authorize(Policy = "BearerToken")]
         public async Task<ActionResult<AcccountGetResponseDto>> Create(AccountPostRequestCreateDto model)

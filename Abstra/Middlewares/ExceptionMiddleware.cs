@@ -16,6 +16,18 @@ namespace Abstra.Middlewares
             {
                 await next(httpContext);
             }
+            catch (BussinessValidationException fex)
+            {
+                _logger.Error(fex);
+
+                httpContext.Response.ContentType = "application/json";
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                BussinessExceptionResponseDto response = new(httpContext.Response.StatusCode, fex.Message,
+                    hostEnvironment.IsDevelopment() ?
+                    fex.StackTrace?.ToString() : null);
+
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
             catch (BussinessException fex)
             {
                 _logger.Error(fex);
