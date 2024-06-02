@@ -17,6 +17,15 @@ namespace Abstra.Mappers
                 .Map(dest => dest.Address, src => src.Address)
                 .Map(dest => dest.Phone, src => src.Phone)
                 .Map(dest => dest.Status, src => src.Status ? "Active" : "Inactive");
+
+            TypeAdapterConfig<Account, AcccountGetResponseDto>.NewConfig()
+                .Map(dest => dest.AccountId, src => src.AccountId)
+                .Map(dest => dest.AccountNumber, src => src.AccountNumber)
+                .Map(dest => dest.AccountType, src => src.AccountType == 'A' ? "Cuenta de Ahorro" : "Cuenta Corriente")
+                .Map(dest => dest.ClientId, src => src.Client!.ClientId)
+                .Map(dest => dest.ClientName, src => src.Client!.Name)
+                .Map(dest => dest.InitialBalance, src => src.InitialBalance)
+                .Map(dest => dest.Status, src => src.Status ? "Active" : "Inactive");
             #endregion
         }
     }

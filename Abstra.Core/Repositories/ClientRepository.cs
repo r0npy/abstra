@@ -22,7 +22,7 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status from Client";
+            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status FROM Client";
 
             IEnumerable<Client>? records = await connection.QueryAsync<Client>(sql);
 
@@ -42,7 +42,7 @@ namespace Abstra.Core.Repositories
 
             await connection.OpenAsync();
 
-            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status from Client WHERE ClientId = @id";
+            string sql = @"SELECT ClientId, Name, Gender, Birthdate, Address, Phone, Status FROM Client WHERE ClientId = @id";
 
             Client? record = await connection.QueryFirstOrDefaultAsync<Client>(sql, new { id });
 
@@ -100,7 +100,7 @@ namespace Abstra.Core.Repositories
 
         public async Task<int> Remove(int id)
         {
-            _logger.Trace($"Vamos a crear cliente el cliente {id}");
+            _logger.Trace($"Vamos a crear eliminar el cliente {id}");
 
             await using SqlConnection connection = new(connectionString);
 
@@ -113,7 +113,7 @@ namespace Abstra.Core.Repositories
             if (affectedRows == 0)
                 throw new BussinessException("No se ha eliminado ningún registro");
 
-            _logger.Info($"Se ha actualizado el cliente: {id} correctamente");
+            _logger.Info($"Se ha eliminado el cliente: {id} correctamente");
 
             return affectedRows;
         }
