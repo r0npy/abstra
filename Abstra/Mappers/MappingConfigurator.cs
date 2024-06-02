@@ -26,6 +26,12 @@ namespace Abstra.Mappers
                 .Map(dest => dest.ClientName, src => src.Client!.Name)
                 .Map(dest => dest.InitialBalance, src => src.InitialBalance)
                 .Map(dest => dest.Status, src => src.Status ? "Active" : "Inactive");
+
+            TypeAdapterConfig<Transaction, TransactionGetResponseDto>.NewConfig()
+                .Map(dest => dest.TransactionId, src => src.TransactionId)
+                .Map(dest => dest.EventDate, src => src.EventDate)
+                .Map(dest => dest.TransactionType, src => src.TransactionType == 'D' ? "Débito" : "Crédito")
+                .Map(dest => dest.Amount, src => src.Amount);
             #endregion
         }
     }

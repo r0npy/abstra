@@ -1,12 +1,17 @@
-﻿namespace Abstra.Core.Domains
+﻿using Dapper.Contrib.Extensions;
+
+namespace Abstra.Core.Domains
 {
     public class Transaction
     {
         public long TransactionId { get; set; }
-        public virtual Account? Account { get; set; }
         public int? AccountId { get; set; }
         public DateTime? EventDate { get; set; }
-        public string? TransactionType { get; set; }
-        public decimal? Ammount { get; set; }
+        public char? TransactionType { get; set; }
+        public decimal? Amount { get; set; }
+        [Computed]
+        public decimal? RunningBalance { get; set; }
+
+        public Account? Account { get; set; }
     }
 }

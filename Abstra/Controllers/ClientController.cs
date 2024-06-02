@@ -74,7 +74,7 @@ namespace Abstra.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(201, Type = typeof(IEnumerable<ClientGetResponseDto>))]
+        [ProducesResponseType(201, Type = typeof(ClientGetResponseDto))]
         [ProducesResponseType(422, Type = typeof(BussinessExceptionResponseDto))]
         [Authorize(Policy = "BearerToken")]
         public async Task<ActionResult<ClientGetResponseDto>> Create(ClientPostRequestCreateDto model)
