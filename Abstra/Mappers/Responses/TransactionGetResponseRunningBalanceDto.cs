@@ -7,7 +7,7 @@ namespace Abstra.Mappers.Responses
         [JsonPropertyName("transactionId")]
         public long TransactionId { get; set; }
 
-        [JsonPropertyName("event_date")]
+        [JsonPropertyName("eventDate")]
         public DateTime EventDate { get; set; }
 
         [JsonPropertyName("transactionType")]
